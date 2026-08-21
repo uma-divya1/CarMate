@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+audit_log.jsonl
+venv/
+.pytest_cache/

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CartMate — Upsell Agent Demo</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>CartMate</h1>
+    <p class="subtitle">Upsell &amp; cross-sell agent for {{ catalog.merchant_name }} (Razorpay test mode)</p>
+  </header>
+
+  <main>
+    <section class="cart-builder">
+      <h2>1. Build a cart</h2>
+      <div class="products">
+        {% for p in catalog.products %}
+        <label class="product-card">
+          <input type="checkbox" value="{{ p.id }}" class="cart-item">
+          <span class="name">{{ p.name }}</span>
+          <span class="price">₹{{ "%.0f"|format(p.price_inr / 100) }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <button id="ask-agent">2. Ask the agent for an upsell</button>
+    </section>
+
+    <section class="agent-panel" id="agent-panel" style="display:none;">
+      <h2>Agent suggestion</h2>
+      <div id="proposal-box"></div>
+    </section>
+
+    <section class="audit-panel">
+      <h2>Audit trail</h2>
+      <button id="refresh-audit">Refresh</button>
+      <pre id="audit-log"></pre>
+    </section>
+  </main>
+
+  <script>
+    const sessionId = "{{ session_id }}";
+
+    document.getElementById("ask-agent").addEventListener("click", async () => {
+      const cart = Array.from(document.querySelectorAll(".cart-item:checked")).map(el => el.value);
+      const box = document.getElementById("proposal-box");
+      const panel = document.getElementById("agent-panel");
+      panel.style.display = "block";
+      box.innerHTML = "Thinking...";
+
+      const res = await fetch("/api/propose", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({cart_product_ids: cart})
+      });
+      const data = await res.json();
+
+      if (!data.ok) {
+        box.innerHTML = `<p class="error">${data.error}</p>`;
+        return;
+      }
+
+      const prop = data.proposal;
+      if (!prop.product_id) {
+        box.innerHTML = `<p>No upsell proposed. Reason: ${prop.reason}</p>`;
+        return;
+      }
+
+      box.innerHTML = `
+        <p><strong>${prop.product.name}</strong> — ₹${(prop.product.price_inr/100).toFixed(0)}</p>
+        <p class="reason">${prop.reason}</p>
+        <button id="accept-btn">Accept &amp; create test order</button>
+        <button id="decline-btn">Decline</button>
+        <div id="checkout-result"></div>
+      `;
+
+      document.getElementById("accept-btn").addEventListener("click", async () => {
+        const r = await fetch("/api/checkout/accept", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({product_id: prop.product_id})
+        });
+        const result = await r.json();
+        const out = document.getElementById("checkout-result");
+        out.innerHTML = result.ok
+          ? `<p class="success">Order created: ${result.order_id} (₹${result.amount_inr})</p>`
+          : `<p class="error">${result.error}</p>`;
+      });
+
+      document.getElementById("decline-btn").addEventListener("click", async () => {
+        await fetch("/api/checkout/decline", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({product_id: prop.product_id})
+        });
+        document.getElementById("checkout-result").innerHTML = "<p>Declined — no order created.</p>";
+      });
+    });
+
+    document.getElementById("refresh-audit").addEventListener("click", async () => {
+      const res = await fetch(`/api/audit/${sessionId}`);
+      const data = await res.json();
+      document.getElementById("audit-log").textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

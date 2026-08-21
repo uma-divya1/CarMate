@@ -1,0 +1,50 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: #1a1a1a;
+}
+header h1 { margin-bottom: 4px; }
+.subtitle { color: #666; margin-top: 0; }
+section { margin-bottom: 32px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.product-card .price { color: #555; }
+button {
+  background: #1f3864;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+button:hover { background: #16294a; }
+.agent-panel, .audit-panel {
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+.reason { color: #444; font-style: italic; }
+.error { color: #b00020; }
+.success { color: #0a7d2c; }
+#audit-log {
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 6px;
+  max-height: 300px;
+  overflow: auto;
+  font-size: 12px;
+}

@@ -1,0 +1,69 @@
+{
+  "merchant_name": "Northwind Outdoor Co.",
+  "products": [
+    {
+      "id": "P001",
+      "name": "Trailblazer 40L Backpack",
+      "price_inr": 349900,
+      "category": "bags",
+      "description": "40-liter hiking backpack with rain cover and hydration sleeve.",
+      "pairs_well_with": ["P004", "P006"]
+    },
+    {
+      "id": "P002",
+      "name": "AeroLight Tent (2-person)",
+      "price_inr": 599900,
+      "category": "shelter",
+      "description": "Lightweight 2-person tent, 3-season, 2.1kg packed weight.",
+      "pairs_well_with": ["P005", "P007"]
+    },
+    {
+      "id": "P003",
+      "name": "TrekPro Hiking Boots",
+      "price_inr": 429900,
+      "category": "footwear",
+      "description": "Waterproof hiking boots with ankle support, sizes 6-11.",
+      "pairs_well_with": ["P008"]
+    },
+    {
+      "id": "P004",
+      "name": "Rain Fly Cover (Universal)",
+      "price_inr": 79900,
+      "category": "accessories",
+      "description": "Waterproof cover that fits most 30-50L backpacks.",
+      "pairs_well_with": []
+    },
+    {
+      "id": "P005",
+      "name": "Sleeping Bag (0°C rated)",
+      "price_inr": 249900,
+      "category": "shelter",
+      "description": "Mummy-style sleeping bag rated to 0°C, compresses to 25x18cm.",
+      "pairs_well_with": []
+    },
+    {
+      "id": "P006",
+      "name": "Hydration Bladder 2L",
+      "price_inr": 129900,
+      "category": "accessories",
+      "description": "2-liter BPA-free hydration bladder with bite valve.",
+      "pairs_well_with": []
+    },
+    {
+      "id": "P007",
+      "name": "Camping Footprint (Ground Sheet)",
+      "price_inr": 59900,
+      "category": "shelter",
+      "description": "Protective ground sheet sized for 2-person tents.",
+      "pairs_well_with": []
+    },
+    {
+      "id": "P008",
+      "name": "Merino Wool Hiking Socks (3-pack)",
+      "price_inr": 89900,
+      "category": "footwear",
+      "description": "Moisture-wicking merino wool socks, 3-pack.",
+      "pairs_well_with": []
+    }
+  ]
+}
